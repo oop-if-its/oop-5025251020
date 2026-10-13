@@ -1,16 +1,9 @@
-// File ini berisi TODO -- lihat SOAL.md untuk kontrak lengkap tiap level.
-// Bagian bertanda TODO(Level N) adalah tugas kalian; kode lain sudah
-// disediakan. Jangan mengubah nama/tipe yang sudah ada kecuali TODO
-// memintanya secara eksplisit.
-
 namespace Pertemuan07;
 
-// TODO(Level 3): implementasikan IDapatDipinjam.
 public class Dvd : Item, IDapatDipinjam
 {
     public int DurasiMenit { get; }
 
-    // SUDAH LENGKAP -- jangan diubah.
     public Dvd(string judul, int durasiMenit) : base(judul)
     {
         if (durasiMenit <= 0)
@@ -30,8 +23,6 @@ public class Dvd : Item, IDapatDipinjam
     public override int MasaPinjamHari => 2;
 
 
-    // TODO(Level 3): implementasi IDapatDipinjam (lihat petunjuk di Buku).
-
     private readonly StatusPinjam _status = new();
     public bool Tersedia => !_status.Dipinjam;
     public void Pinjam() => _status.Tandai();
@@ -40,6 +31,5 @@ public class Dvd : Item, IDapatDipinjam
         _status.Lepas();
     }
 
-    // TODO(Level 10 (bonus)): override hook `protected override string
-    //   Catatan()` -> "Periksa kondisi disk".
+    protected override string Catatan() => "Periksa kondisi disk";
 }

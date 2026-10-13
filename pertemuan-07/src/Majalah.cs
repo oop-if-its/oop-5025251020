@@ -1,19 +1,9 @@
-// File ini berisi TODO -- lihat SOAL.md untuk kontrak lengkap tiap level.
-// Bagian bertanda TODO(Level N) adalah tugas kalian; kode lain sudah
-// disediakan. Jangan mengubah nama/tipe yang sudah ada kecuali TODO
-// memintanya secara eksplisit.
-
 namespace Pertemuan07;
 
-// TODO(Level 8): implementasikan IDapatDicetak dengan cara EKSPLISIT (`string
-//   IDapatDicetak.Cetak()`) -- method-nya tidak muncul di tipe Majalah, hanya
-//   lewat variabel bertipe IDapatDicetak.
-// Majalah TIDAK mengimplementasikan IDapatDiperpanjang.
-public class Majalah : Item, IDapatDipinjam
+public class Majalah : Item, IDapatDipinjam, IDapatDicetak
 {
     public int Edisi { get; }
 
-    // SUDAH LENGKAP -- jangan diubah.
     public Majalah(string judul, int edisi) : base(judul)
     {
         if (edisi <= 0)
@@ -34,6 +24,5 @@ public class Majalah : Item, IDapatDipinjam
     public void Pinjam() => _status.Tandai();
     public void Kembalikan() => _status.Lepas();
 
-    // TODO(Level 8): implementasi EKSPLISIT IDapatDicetak.Cetak() -> "Majalah:
-    //   <Judul> edisi <Edisi>".
+    string IDapatDicetak.Cetak() => $"Majalah: {Judul} edisi {Edisi}";
 }

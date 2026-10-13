@@ -1,11 +1,5 @@
-// File ini berisi TODO -- lihat SOAL.md untuk kontrak lengkap tiap level.
-// Bagian bertanda TODO(Level N) adalah tugas kalian; kode lain sudah
-// disediakan. Jangan mengubah nama/tipe yang sudah ada kecuali TODO
-// memintanya secara eksplisit.
-
 namespace Pertemuan07;
 
-// Bekerja dengan KONTRAK (interface), bukan kelas konkret.
 public static class Katalog
 {
     public static int PinjamSemua(IEnumerable<IDapatDipinjam> daftar)
@@ -41,8 +35,6 @@ public static class Katalog
     }
 }
 
-// Dependency Injection: LayananPeminjaman TIDAK membuat pemberitahuannya
-// sendiri -- ia menerimanya dari luar lewat konstruktor, sebagai interface.
 public class LayananPeminjaman
 {
     private readonly INotifikasi _notifikasi;
@@ -59,18 +51,12 @@ public class LayananPeminjaman
         if (item is not IDapatDipinjam) throw new InvalidOperationException();
         try
         {
-
+            ((IDapatDipinjam)item).Pinjam();
+            _notifikasi.Kirim($"{namaAnggota} meminjam {item.Judul}");
         }
         catch (System.Exception)
         {
-
             throw;
         }
-        // TODO(Level 6): item null -> ArgumentNullException; item BUKAN
-        //   IDapatDipinjam -> InvalidOperationException; selain itu panggil
-        //   Pinjam() (kalau melempar, biarkan menjalar dan JANGAN kirim
-        //   notifikasi), lalu kirim pesan "<namaAnggota> meminjam <Judul>" lewat
-        //   INotifikasi.
-        throw new NotImplementedException("Level 6 belum diimplementasikan");
     }
 }
