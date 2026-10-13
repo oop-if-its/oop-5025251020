@@ -17,15 +17,11 @@ public class Majalah : Item
         Edisi = edisi;
     }
 
-    public override int HitungDenda(int hariTerlambat)
-    {
-        return 500 * Math.Max(hariTerlambat, 0);
-    }
+    // TODO(Level 3): override HitungDenda(int): Rp500 per hari terlambat
+    //   (hariTerlambat <= 0 -> 0).
 
-    public override int MasaPinjamHari => 3;
+    // TODO(Level 4): override MasaPinjamHari -> 3.
 
-    public override string Deskripsi()
-    {
-        return $"{base.Deskripsi()} edisi {Edisi}";
-    }
+    // TODO(Level 5): override Deskripsi() -> "<base.Deskripsi()> edisi <Edisi>",
+    //   mis. "[Tempo] edisi 12".
 }

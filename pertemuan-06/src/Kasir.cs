@@ -14,13 +14,11 @@ public class Kasir
 {
     public int TotalDenda(IEnumerable<Peminjaman> daftar)
     {
-        ArgumentNullException.ThrowIfNull(daftar);
-        int result = 0;
-        foreach (var d in daftar)
-        {
-            result += d.Item.HitungDenda(d.HariTerlambat);
-        }
-        return result;
+        // TODO(Level 6): null -> ArgumentNullException; jumlahkan
+        //   p.Item.HitungDenda(p.HariTerlambat) untuk semua peminjaman. JANGAN
+        //   memeriksa jenis item (tidak boleh ada if/is/switch atas tipe) --
+        //   biarkan polimorfisme bekerja.
+        throw new NotImplementedException("Level 6 belum diimplementasikan");
     }
 
     public Item? ItemDenganDendaTertinggi(IEnumerable<Peminjaman> daftar)
@@ -28,19 +26,6 @@ public class Kasir
         // TODO(Level 6): null -> ArgumentNullException; kembalikan Item dengan
         //   denda TERTINGGI (kalau seri, ambil yang pertama muncul); daftar
         //   kosong -> null.
-        ArgumentNullException.ThrowIfNull(daftar);
-
-        Item? result = null;
-        int temp = 0;
-        foreach (var d in daftar)
-        {
-            if (d.Item.HitungDenda(d.HariTerlambat) > temp)
-            {
-                result = d.Item;
-                temp = d.Item.HitungDenda(d.HariTerlambat);
-            }
-        }
-
-        return result;
+        throw new NotImplementedException("Level 6 belum diimplementasikan");
     }
 }

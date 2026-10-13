@@ -17,15 +17,12 @@ public class Buku : Item
         Penulis = penulis;
     }
 
-    public override int HitungDenda(int hariTerlambat)
-    {
-        return 2000 * Math.Max(hariTerlambat, 0);
-    }
+    // TODO(Level 2): tulis override HitungDenda(int) untuk Buku: Rp2.000 per
+    //   hari terlambat (hariTerlambat <= 0 -> 0). Pakai `public override`, BUKAN
+    //   `new`.
 
-    public override int MasaPinjamHari => 14;
+    // TODO(Level 4): override properti MasaPinjamHari -> 14.
 
-    public override string Deskripsi()
-    {
-        return $"{base.Deskripsi()} oleh {Penulis}";
-    }
+    // TODO(Level 5): override Deskripsi() -> "<base.Deskripsi()> oleh
+    //   <Penulis>", mis. "[Bumi Manusia] oleh Pramoedya".
 }
