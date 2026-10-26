@@ -1,4 +1,5 @@
 namespace Proyek;
+using System.Security.Cryptography;
 
 public enum StatusPaket
 {
@@ -24,14 +25,14 @@ public abstract class Paket : IBisaDilacak
 
     protected abstract float HargaPerKgKm { get; }
 
-    private readonly List<RiwayatPelacakan> _riwayatPelacakan = new();
+    protected readonly List<RiwayatPelacakan> _riwayatPelacakan = new();
 
-    public Paket(string nomorResi, string pengirim, string penerima, float beratKg, float jarakKm)
+    public Paket(string pengirim, string penerima, float beratKg, float jarakKm)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(pengirim);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(penerima);
-        ArgumentNullException.ThrowIfNullOrWhiteSpace(nomorResi);
-        NomorResi = nomorResi;
+
+        NomorResi = RandomNumberGenerator.GetInt32(1000000, 9999999).ToString();
         Penerima = penerima;
         Pengirim = pengirim;
         BeratKg = beratKg;
