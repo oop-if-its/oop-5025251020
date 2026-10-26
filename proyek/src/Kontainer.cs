@@ -1,11 +1,13 @@
 namespace Proyek;
+
 using System.Security.Cryptography;
 
 public class Kontainer : IBisaDilacak
 {
-    private string NomorId { get; init; }
+    public string NomorId { get; }
     private readonly List<Paket> _daftarPaket = new();
     private string Lokasi { get; set; } = "Gudang";
+    private readonly List<RiwayatPelacakan> _riwayatPelacakan = new();
 
     public Kontainer()
     {
@@ -15,8 +17,12 @@ public class Kontainer : IBisaDilacak
     public void TambahPaket(Paket paket)
     {
         ArgumentNullException.ThrowIfNull(paket);
+
+        if (_daftarPaket.Any(p => p.NomorResi == paket.NomorResi))
+            throw new InvalidOperationException($"Paket dengan resi {paket.NomorResi} sudah berada di kontainer ini.");
+
+        paket.MasukkanKontainer(NomorId, Lokasi);
         _daftarPaket.Add(paket);
-        paket.MasukkanKontainer(NomorId);
     }
 
     public IReadOnlyList<Paket> DaftarPaketTerurut =>
@@ -29,13 +35,13 @@ public class Kontainer : IBisaDilacak
                 _ => 3
             })
             .ToList();
-    
+
     public void UpdateLokasi(string lokasi)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(lokasi);
         Lokasi = lokasi;
     }
-    
+
     public string Lacak()
     {
         return $"Kontainer {NomorId} berisi {_daftarPaket.Count} paket di {Lokasi}";

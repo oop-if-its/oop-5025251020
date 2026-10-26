@@ -10,7 +10,7 @@ public enum StatusPaket
 
 public abstract class Paket : IBisaDilacak
 {
-    protected string NomorResi { get; }
+    public string NomorResi { get; }
     protected string Penerima { get; }
     protected string Pengirim { get; }
 
@@ -24,6 +24,8 @@ public abstract class Paket : IBisaDilacak
 
     protected abstract float HargaPerKgKm { get; }
 
+    private readonly List<RiwayatPelacakan> _riwayatPelacakan = new();
+
     public Paket(string nomorResi, string pengirim, string penerima, float beratKg, float jarakKm)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(pengirim);
@@ -36,25 +38,32 @@ public abstract class Paket : IBisaDilacak
         JarakKm = jarakKm;
 
         Status = StatusPaket.Disiapkan;
+        _riwayatPelacakan.Add(new RiwayatPelacakan(DateTime.Now, "Gudang", Status));
     }
 
-    public void UpdateStatus(StatusPaket newStatus)
+    public void UpdateStatus(StatusPaket newStatus, string lokasi)
     {
         if (newStatus - Status != 1)
-            throw new InvalidOperationException();
+            throw new StatusTidakValidException(Status, newStatus);
         Status = newStatus;
+        _riwayatPelacakan.Add(new RiwayatPelacakan(DateTime.Now, lokasi, Status));
     }
 
     public abstract float HitungOngkir();
-    public void MasukkanKontainer(string nomorKontainer)
+    public void MasukkanKontainer(string nomorKontainer, string lokasi)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(nomorKontainer);
+
+        if (NomorKontainer is not null)
+            throw new InvalidOperationException($"Paket {NomorResi} sudah berada di kontainer {NomorKontainer}.");
+
         NomorKontainer = nomorKontainer;
+        _riwayatPelacakan.Add(new RiwayatPelacakan(DateTime.Now, lokasi, Status));
     }
     public string Lacak()
     {
         string? kontainer = NomorKontainer;
-        string lacak = $"Paket {NomorResi} dari {Pengirim} ke {Penerima} berstatus {Status}"; 
+        string lacak = $"Paket {NomorResi} dari {Pengirim} ke {Penerima} berstatus {Status}";
 
         if (kontainer is not null)
             lacak += $" dan berada di kontainer {kontainer}";
