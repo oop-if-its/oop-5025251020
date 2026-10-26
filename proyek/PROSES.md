@@ -48,3 +48,7 @@ Fix: memusatkan penambahan riwayat pada method `TambahRiwayat`. Method tersebut 
 ## Pengurutan Paket pada kontainer tidak sesuai dengan aturan pada fungsi CompareTo
 Paket hanya diurutkan berdasarkan prioritas karena masih menggunakan method OrderBy
 Fix: menggantinya dengan method .Order saja sehingga menggunakan komparator default yaitu CompareTo
+
+## Aplikasi crash saat kontainer tidak ditemukan
+`CariKontainer()` melempar `ArgumentNullException`, sedangkan menu menangkap `KontainerTidakDitemukanException`, sehingga aplikasi crash.
+Fix: mengganti exception menjadi `KontainerTidakDitemukanException` agar error ditangani tanpa crash.

@@ -39,7 +39,7 @@ public class Ekspedisi : IDisposable
         ThrowIfDisposed();
         Kontainer? kontainer = _kontainer.FirstOrDefault(k => k.NomorId == idKontainer);
         if (kontainer is null)
-            throw new ArgumentNullException();
+            throw new KontainerTidakDitemukanException(idKontainer);
 
         return kontainer;
     }
