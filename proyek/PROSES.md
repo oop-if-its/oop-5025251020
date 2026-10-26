@@ -19,7 +19,7 @@ Masalah:
 
 | Kelas / tipe | Jenis | Tanggung jawab | Hubungan |
 |---|---|---|---|
-| `StatusPaket` | enum | Tiga status berurutan: `DiTerima`, `DiKirim`, `Sampai` | Dipakai oleh `Paket` (atribut `Status`) dan `RiwayatPelacakan` (atribut `Status`) |
+| `StatusPaket` | enum | Empat status berurutan: `Disiapkan`, `Dikirim`, `Sampai`, `Diterima` | Dipakai oleh `Paket` (atribut `Status`) dan `RiwayatPelacakan` (atribut `Status`) |
 | `IBisaDilacak` | interface | Kontrak pelacakan: `AmbilResi()`, `AmbilStatus()`, `AmbilRiwayat()` | Diimplementasikan oleh `Paket` dan `Kontainer` |
 | `Paket` | abstract class | Blueprint semua paket: data dasar, aturan status, kerangka `HitungOngkir()` | Mengimplementasikan `IBisaDilacak`; diwarisi `PaketReguler`, `PaketKilat`, `PaketKargo`. Memiliki `RiwayatPelacakan`, dapat melempar `StatusTidakValidException` |
 | `PaketReguler` | class | Paket biasa | Mewarisi `Paket` (inheritance) |

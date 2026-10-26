@@ -8,7 +8,7 @@ public enum StatusPaket
     Diterima
 }
 
-public abstract class Paket
+public abstract class Paket : IBisaDilacak
 {
     protected string NomorResi { get; }
     protected string Penerima { get; }
@@ -20,6 +20,7 @@ public abstract class Paket
     protected bool Asuransi { get; set; }
 
     protected StatusPaket Status { get; set; }
+    protected string? NomorKontainer { get; set; }
 
     protected abstract float HargaPerKgKm { get; }
 
@@ -45,4 +46,19 @@ public abstract class Paket
     }
 
     public abstract float HitungOngkir();
+    public void MasukkanKontainer(string nomorKontainer)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(nomorKontainer);
+        NomorKontainer = nomorKontainer;
+    }
+    public string Lacak()
+    {
+        string? kontainer = NomorKontainer;
+        string lacak = $"Paket {NomorResi} dari {Pengirim} ke {Penerima} berstatus {Status}"; 
+
+        if (kontainer is not null)
+            lacak += $" dan berada di kontainer {kontainer}";
+
+        return lacak;
+    }
 }

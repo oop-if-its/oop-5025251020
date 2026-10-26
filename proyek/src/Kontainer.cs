@@ -1,10 +1,11 @@
 namespace Proyek;
 using System.Security.Cryptography;
 
-public class Kontainer
+public class Kontainer : IBisaDilacak
 {
-    public string NomorId { get; init; }
+    private string NomorId { get; init; }
     private readonly List<Paket> _daftarPaket = new();
+    private string Lokasi { get; set; } = "Gudang";
 
     public Kontainer()
     {
@@ -15,6 +16,7 @@ public class Kontainer
     {
         ArgumentNullException.ThrowIfNull(paket);
         _daftarPaket.Add(paket);
+        paket.MasukkanKontainer(NomorId);
     }
 
     public IReadOnlyList<Paket> DaftarPaketTerurut =>
@@ -27,4 +29,15 @@ public class Kontainer
                 _ => 3
             })
             .ToList();
+    
+    public void UpdateLokasi(string lokasi)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(lokasi);
+        Lokasi = lokasi;
+    }
+    
+    public string Lacak()
+    {
+        return $"Kontainer {NomorId} berisi {_daftarPaket.Count} paket di {Lokasi}";
+    }
 }
