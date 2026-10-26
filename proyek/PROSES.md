@@ -31,10 +31,20 @@ Masalah:
 | `StatusTidakValidException` | exception | Dilempar saat status loncat atau mundur | Mewarisi `Exception`; dilempar oleh `Paket` |
 | `PaketTidakDitemukanException` | exception | Dilempar saat resi tidak ada | Mewarisi `Exception`; dilempar oleh `Ekspedisi` |
 
-## 3. Satu keputusan desain dan alasannya
+## 3. Keputusan desain dan alasannya
 
-Membuat StatusPaket menjadi enum agar memiliki pilihan yang fixed, tidak seperti string. Juga mempermudah validitas pengubahan status.
+Membuat `StatusPaket` menjadi enum agar pilihan status bersifat tetap dan dapat dibandingkan secara berurutan. Dengan nilai enum yang berurutan, `UpdateStatus` dapat memastikan status hanya maju satu tahap dan tidak dapat melompati tahap.
+
+Menerapkan `IComparable<Paket>` pada `Paket` agar aturan pengurutan berada pada objek paket, bukan pada `Kontainer`. `CompareTo` membandingkan prioritas pengiriman, kemudian ongkir, sehingga `Kontainer` cukup memanggil `Order()` tanpa memeriksa tipe konkret paket.
+
+Menggunakan menu looping di `Program.cs` dengan data dummy yang tetap dibuat saat aplikasi dimulai. Menu membuktikan operasi utama kelas domain secara langsung, sedangkan data dummy membuat fitur pencarian, pengurutan, status, dan riwayat.
 
 ## 4. Bug atau kendala (minimal dua)
 
-Untuk tiap kendala: apa yang terjadi, bagaimana menemukan penyebabnya, bagaimana memperbaikinya.
+## Riwayat pelacakan paket tercatat dua kali
+Saat paket baru dimasukkan ke kontainer, riwayat `Gudang - Disiapkan` muncul dua kali.
+Fix: memusatkan penambahan riwayat pada method `TambahRiwayat`. Method tersebut membandingkan lokasi dan status dengan catatan terakhir, sehingga catatan identik tidak ditambahkan lagi.
+
+## Pengurutan Paket pada kontainer tidak sesuai dengan aturan pada fungsi CompareTo
+Paket hanya diurutkan berdasarkan prioritas karena masih menggunakan method OrderBy
+Fix: menggantinya dengan method .Order saja sehingga menggunakan komparator default yaitu CompareTo

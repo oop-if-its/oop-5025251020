@@ -6,7 +6,7 @@ public class Ekspedisi
     public string Nama => _nama;
 
     private readonly List<Paket> _paket = new();
-    public IReadOnlyList<Paket> DaftarPaket => _paket.AsReadOnly();
+    public IReadOnlyList<Paket> DaftarPaket => _paket.Order().ToList();
 
     private readonly List<Kontainer> _kontainer = new();
     public IReadOnlyList<Kontainer> DaftarKontainer => _kontainer.AsReadOnly();

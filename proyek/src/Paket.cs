@@ -9,7 +9,7 @@ public enum StatusPaket
     Diterima
 }
 
-public abstract class Paket : IBisaDilacak, IEquatable<Paket>
+public abstract class Paket : IBisaDilacak, IEquatable<Paket>, IComparable<Paket>
 {
     public string NomorResi { get; }
     protected string Penerima { get; }
@@ -22,6 +22,8 @@ public abstract class Paket : IBisaDilacak, IEquatable<Paket>
 
     protected StatusPaket Status { get; set; }
     protected string? NomorKontainer { get; set; }
+
+    public StatusPaket StatusSaatIni => Status;
 
     protected abstract float HargaPerKgKm { get; }
 
@@ -50,10 +52,12 @@ public abstract class Paket : IBisaDilacak, IEquatable<Paket>
 
     public void UpdateStatus(StatusPaket newStatus, string lokasi)
     {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(lokasi);
+
         if (newStatus - Status != 1)
             throw new StatusTidakValidException(Status, newStatus);
         Status = newStatus;
-        _riwayatPelacakan.Add(new RiwayatPelacakan(DateTime.Now, lokasi, Status));
+        TambahRiwayat(lokasi);
     }
 
     public abstract float HitungOngkir();
@@ -66,6 +70,21 @@ public abstract class Paket : IBisaDilacak, IEquatable<Paket>
             throw new InvalidOperationException($"Paket {NomorResi} sudah berada di kontainer {NomorKontainer}.");
 
         NomorKontainer = nomorKontainer;
+        TambahRiwayat(lokasi);
+    }
+
+    private void TambahRiwayat(string lokasi)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(lokasi);
+
+        RiwayatPelacakan? riwayatTerakhir = _riwayatPelacakan.LastOrDefault();
+        if (riwayatTerakhir is not null &&
+            riwayatTerakhir.Lokasi == lokasi &&
+            riwayatTerakhir.Status == Status)
+        {
+            return;
+        }
+
         _riwayatPelacakan.Add(new RiwayatPelacakan(DateTime.Now, lokasi, Status));
     }
     public string Lacak()
@@ -79,11 +98,36 @@ public abstract class Paket : IBisaDilacak, IEquatable<Paket>
         return lacak;
     }
 
-    public  bool Equals(Paket? other)
+    public bool Equals(Paket? other)
     {
         if (other is null)
             return false;
 
         return NomorResi == other.NomorResi;
+    }
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Paket);
+    }
+
+    public override int GetHashCode()
+    {
+        return NomorResi.GetHashCode(StringComparison.Ordinal);
+    }
+
+    public int CompareTo(Paket? other)
+    {
+        if (other is null)
+            return 1;
+
+        int hasil = DapatkanPrioritas().CompareTo(other.DapatkanPrioritas());
+        if (hasil != 0)
+            return hasil;
+
+        hasil = HitungOngkir().CompareTo(other.HitungOngkir());
+        if (hasil != 0)
+            return hasil;
+
+        return Asuransi.CompareTo(other.Asuransi);
     }
 }
