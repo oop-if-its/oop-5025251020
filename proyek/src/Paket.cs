@@ -9,7 +9,7 @@ public enum StatusPaket
     Diterima
 }
 
-public abstract class Paket : IBisaDilacak
+public abstract class Paket : IBisaDilacak, IEquatable<Paket>
 {
     public string NomorResi { get; }
     protected string Penerima { get; }
@@ -25,12 +25,18 @@ public abstract class Paket : IBisaDilacak
 
     protected abstract float HargaPerKgKm { get; }
 
-    protected readonly List<RiwayatPelacakan> _riwayatPelacakan = new();
+    private readonly List<RiwayatPelacakan> _riwayatPelacakan = new();
+    public IReadOnlyList<RiwayatPelacakan> RiwayatPelacakan => _riwayatPelacakan.AsReadOnly();
 
     public Paket(string pengirim, string penerima, float beratKg, float jarakKm)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(pengirim);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(penerima);
+
+        if (beratKg <= 0)
+            throw new ArgumentOutOfRangeException();
+        if(jarakKm <= 0)
+            throw new ArgumentOutOfRangeException();
 
         NomorResi = RandomNumberGenerator.GetInt32(1000000, 9999999).ToString();
         Penerima = penerima;
@@ -70,5 +76,13 @@ public abstract class Paket : IBisaDilacak
             lacak += $" dan berada di kontainer {kontainer}";
 
         return lacak;
+    }
+
+    public  bool Equals(Paket? other)
+    {
+        if (other is null)
+            return false;
+
+        return NomorResi == other.NomorResi;
     }
 }
