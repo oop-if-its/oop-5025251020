@@ -57,6 +57,7 @@ public abstract class Paket : IBisaDilacak, IEquatable<Paket>
     }
 
     public abstract float HitungOngkir();
+    public abstract int DapatkanPrioritas();
     public void MasukkanKontainer(string nomorKontainer, string lokasi)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(nomorKontainer);

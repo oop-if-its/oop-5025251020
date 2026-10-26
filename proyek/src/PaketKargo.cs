@@ -5,12 +5,13 @@ public class PaketKargo : Paket
     protected override float HargaPerKgKm => 2000;
     private const float BeratMinimum = 25f;
 
-    public PaketKargo(string nomorResi, string pengirim, string penerima, float beratKg, float jarakKm, bool asuransi = false) : base(nomorResi, pengirim, penerima, beratKg, jarakKm)
+    public PaketKargo(string pengirim, string penerima, float beratKg, float jarakKm, bool asuransi = false) : base(pengirim, penerima, beratKg, jarakKm)
     {
         if (beratKg < BeratMinimum) throw new ArgumentException();
         Asuransi = asuransi;
     }
 
+    public override int DapatkanPrioritas() => 2;
     public override float HitungOngkir()
     {
         float ongkir = HargaPerKgKm * BeratKg * JarakKm;

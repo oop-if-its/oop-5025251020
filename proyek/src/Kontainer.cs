@@ -27,13 +27,7 @@ public class Kontainer : IBisaDilacak
 
     public IReadOnlyList<Paket> DaftarPaketTerurut =>
         _daftarPaket
-            .OrderBy(paket => paket switch
-            {
-                PaketKilat => 0,
-                PaketKargo => 1,
-                PaketReguler => 2,
-                _ => 3
-            })
+            .OrderBy(paket => paket.DapatkanPrioritas())
             .ToList();
 
     public void UpdateLokasi(string lokasi)
@@ -46,4 +40,6 @@ public class Kontainer : IBisaDilacak
     {
         return $"Kontainer {NomorId} berisi {_daftarPaket.Count} paket di {Lokasi}";
     }
+
+    public float NilaiKontainer => _daftarPaket.Sum(p => p.HitungOngkir());
 }
