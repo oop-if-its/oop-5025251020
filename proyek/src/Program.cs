@@ -1,6 +1,6 @@
 using Proyek;
 
-Ekspedisi ekspedisi = new("JNT");
+using Ekspedisi ekspedisi = new();
 List<Kontainer> kontainer = [];
 string[] namaPengirim = ["Budi", "Dimas", "Citra", "Andi", "Sari", "Rina", "Fajar", "Lestari", "Gilang"];
 string[] namaPenerima = ["Wahyu", "Nadia", "Bagas", "Intan", "Rizky", "Maya", "Arif", "Putri", "Yoga"];
@@ -148,7 +148,8 @@ void TampilkanDetailKontainer()
     if (kontainerYangDipilih is null)
         return;
 
-    Console.WriteLine($"\n{kontainerYangDipilih.Lacak()}");
+    LayananPelacakan layananKontainer = new(kontainerYangDipilih);
+    Console.WriteLine($"\n{layananKontainer.DapatkanInformasiPelacakan()}");
     Console.WriteLine("Riwayat pelacakan kontainer:");
     foreach (RiwayatPelacakan riwayat in kontainerYangDipilih.RiwayatPelacakan)
     {
@@ -213,7 +214,8 @@ void LacakPaket()
     try
     {
         Paket paket = ekspedisi.CariPaket(nomorResi);
-        Console.WriteLine(paket.Lacak());
+        LayananPelacakan layananPaket = new(paket);
+        Console.WriteLine(layananPaket.DapatkanInformasiPelacakan());
         Console.WriteLine("Riwayat pelacakan:");
         foreach (RiwayatPelacakan riwayat in paket.RiwayatPelacakan)
         {
@@ -236,7 +238,8 @@ void TampilkanPaketTerurut()
             $"- {paket.GetType().Name}, resi {paket.NomorResi}, " +
             $"prioritas {paket.DapatkanPrioritas()}, ongkir Rp{paket.HitungOngkir():N0}, " +
             $"kontainer {CariNomorKontainer(paket)}");
-        Console.WriteLine($"  {paket.Lacak()}");
+        LayananPelacakan layananPaket = new(paket);
+        Console.WriteLine($"  {layananPaket.DapatkanInformasiPelacakan()}");
     }
 }
 
@@ -335,9 +338,9 @@ Kontainer? PilihKontainer()
     {
         return ekspedisi.CariKontainer(nomorId);
     }
-    catch (ArgumentNullException)
+    catch (KontainerTidakDitemukanException exception)
     {
-        Console.WriteLine("Kontainer tidak ditemukan.");
+        Console.WriteLine(exception.Message);
         return null;
     }
 }
