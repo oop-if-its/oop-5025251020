@@ -1,3 +1,5 @@
+namespace Proyek;
+
 public enum StatusPaket
 {
     Disiapkan,
@@ -8,16 +10,16 @@ public enum StatusPaket
 
 public abstract class Paket
 {
-    private string NomorResi { get; }
-    private string Penerima { get; }
-    private string Pengirim { get; }
+    protected string NomorResi { get; }
+    protected string Penerima { get; }
+    protected string Pengirim { get; }
 
-    private float BeratKg { get; }
-    private float JarakKm { get; }
+    protected float BeratKg { get; }
+    protected float JarakKm { get; }
 
-    private bool Asuransi { get; }
+    protected bool Asuransi { get; set; }
 
-    private StatusPaket Status { get; set; }
+    protected StatusPaket Status { get; set; }
 
     protected abstract float HargaPerKgKm { get; }
 
